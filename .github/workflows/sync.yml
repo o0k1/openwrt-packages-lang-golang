@@ -14,7 +14,7 @@ jobs:
       fail-fast: false
       matrix:
         UPSTREAM: ['openwrt']
-        VERSION: ['23.05', '24.10', 'master']
+        VERSION: ['23.05', '24.10', '25.12', 'master']
 
     steps:
       - name: Checkout repo
