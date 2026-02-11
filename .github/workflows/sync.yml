@@ -13,8 +13,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        UPSTREAM: ['openwrt']
-        VERSION: ['23.05', '24.10', '25.12', 'master']
+        include:
+          - UPSTREAM: 'openwrt'
+            BRANCH: ['23.05', '24.10', '25.12', 'master']
+          - UPSTREAM: 'coolsnowwolf'
+            BRANCH: 'master'
 
     steps:
       - name: Checkout repo
@@ -23,13 +26,12 @@ jobs:
           path: workdir
           fetch-depth: 0
 
-      - name: Checkout upstream (openwrt)
+      - name: Checkout upstream
         uses: actions/checkout@v5
-        if: matrix.UPSTREAM == 'openwrt'
         with:
           path: upstream
-          repository: openwrt/packages
-          ref: ${{ matrix.VERSION != 'master' && 'openwrt-' || '' }}${{ matrix.VERSION }}
+          repository: ${{ matrix.UPSTREAM }}/packages
+          ref: ${{ matrix.BRANCH != 'master' && 'openwrt-' || '' }}${{ matrix.BRANCH }}
           fetch-depth: 1
 
       - name: Confugure git
@@ -40,7 +42,7 @@ jobs:
       - name: Prepare branch
         run: |
           cd workdir
-          git switch --orphan ${{ matrix.UPSTREAM }}-${{ matrix.VERSION }} || git switch ${{ matrix.UPSTREAM }}-${{ matrix.VERSION }}
+          git switch --orphan ${{ matrix.UPSTREAM }}-${{ matrix.BRANCH }} || git switch ${{ matrix.UPSTREAM }}-${{ matrix.BRANCH }}
           rm -rf ./*
       
       - name: Sync files
@@ -52,5 +54,5 @@ jobs:
         run: |
           cd workdir
           git add .
-          git commit -m "Sync from ${{ matrix.UPSTREAM }}/packages:${{ matrix.VERSION }}" || echo "No changes to commit"
-          git push origin ${{ matrix.UPSTREAM }}-${{ matrix.VERSION }} --force
+          git commit -m "Sync from ${{ matrix.UPSTREAM }}/packages:${{ matrix.BRANCH }}" || echo "No changes to commit"
+          git push origin ${{ matrix.UPSTREAM }}-${{ matrix.BRANCH }} --force
