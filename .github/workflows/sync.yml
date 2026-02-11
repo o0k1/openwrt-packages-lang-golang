@@ -15,7 +15,14 @@ jobs:
       matrix:
         include:
           - UPSTREAM: 'openwrt'
-            BRANCH: ['23.05', '24.10', '25.12', 'master']
+            BRANCH: '23.05'
+          - UPSTREAM: 'openwrt'
+            BRANCH: '24.10'
+          - UPSTREAM: 'openwrt'
+            BRANCH: '25.12'
+          - UPSTREAM: 'openwrt'
+            BRANCH: 'master'
+
           - UPSTREAM: 'coolsnowwolf'
             BRANCH: 'master'
 
