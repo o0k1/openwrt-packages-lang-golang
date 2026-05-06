@@ -15,8 +15,6 @@ jobs:
       matrix:
         include:
           - UPSTREAM: 'openwrt'
-            BRANCH: '23.05'
-          - UPSTREAM: 'openwrt'
             BRANCH: '24.10'
           - UPSTREAM: 'openwrt'
             BRANCH: '25.12'
